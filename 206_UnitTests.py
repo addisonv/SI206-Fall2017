@@ -6,7 +6,7 @@ import unittest
 
 ##COMMENT YOUR CODE WITH:
 # Section Day/Time: Wednesdays 6-7
-# People you worked with: 
+# People you worked with:
 
 ######### DO NOT CHANGE PROVIDED CODE #########
 ### Below is the same cards.py code you saw in lecture.
@@ -70,7 +70,7 @@ class Deck(object):
 				self.cards.append(card)
 
 
-def play_war_game(testing=False):
+def play_war_game(testing=True):
 	# Call this with testing = True and it won't print out all the game stuff -- makes it hard to see test results
 	player1 = Deck()
 	player2 = Deck()
@@ -138,6 +138,56 @@ class cardTest(unittest.TestCase):
 	def test_Queen(self):
 		x = Card(rank=12)
 		self.assertEqual(x.rank, "Queen")
+
+	def test_Ace(self):
+		x = Card(rank=1)
+		self.assertEqual(x.rank, "Ace")
+
+	def test_Three(self):
+		x = Card(rank=3)
+		self.assertEqual(x.rank, 3)
+
+	def test_Clubs(self):
+		x = Card(suit=1)
+		self.assertEqual(x.suit, "Clubs")
+
+	def test_Hearts(self):
+		x = Card(suit=2)
+		self.assertEqual(x.suit, "Hearts")
+
+	def test_Suit_Names(self):
+		x = Card()
+		self.assertEqual(x.suit_names, ["Diamonds","Clubs","Hearts","Spades"])
+
+	def test_Str(self):
+		x = Card(suit=2, rank=7)
+		self.assertEqual(str(x), "7 of Hearts")
+
+	def test_Number_of_Cards(self):
+		x = Deck()
+		self.assertEqual(len(x.cards),52)
+
+	def test_Pop_Card_Instance(self):
+		y = Deck()
+		x = Card()
+		self.assertEqual(type(y.pop_card()), type(x))
+
+	def test_Play_War_Game(self):
+		x = play_war_game()
+		self.assertEqual(len(x), 3)
+		self.assertEqual(type(x[0]), str)
+		
+
+	def test_Suffle(self):
+		x = Deck()
+		y = Deck()
+		self.assertFalse(x.shuffle == y.shuffle)
+	#Testing if the suffle function of the Deck instance is called twice that the two suffled decks will be different
+
+	def test_Ace(self):
+		x = Card(rank=1)
+		self.assertEqual(x.rank, "Ace")
+	#Testing if you create a card with rank 1, its rank will be "Ace"
 
 
 

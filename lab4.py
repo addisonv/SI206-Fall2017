@@ -2,8 +2,9 @@ import re
 
 hand = open('mbox-short.txt')
 for line in hand:
-    x = re.findall('^From', line)
-    print(x)
-	#if re.findall('^From')
-	#	print(line)    	
+    if re.findall('^From', line):
+    	print(line)
+for line in hand:
+	host = re.findall("^From (.*)@[^ ]*", line)
+	print(host)
 

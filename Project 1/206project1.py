@@ -100,12 +100,10 @@ def mySortPrint(a,col,fileName):
 		sortedData = sorted(a, key=lambda x: x[col])
 		keys = sortedData[0].keys()
 		writer = csv.DictWriter(csvfile, fieldnames=keys)
-		#writer.writeheader()
 		for row in sortedData:
 			del row["Class"]
 			del row["DOB"]	
 			writer.writerow(row)
-	return
 
 		
 
