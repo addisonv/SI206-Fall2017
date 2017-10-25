@@ -14,7 +14,7 @@ import unittest
 import requests
 import re
 from bs4 import BeautifulSoup
-
+from urllib.request import urlopen
 
 
 ## Part 1 -- Define your find_urls function here.
@@ -28,7 +28,8 @@ from bs4 import BeautifulSoup
 ## find_urls("the internet is awesome #worldwideweb") should return [], empty list
 
 def find_urls(s):
-    pass
+    url = re.findall('http[s]?://\S+\.[a-zA-Z]{2,}',s)
+    return url
     #Your code here
 
 
@@ -39,7 +40,17 @@ def find_urls(s):
 ## http://www.michigandaily.com/section/opinion
 
 def grab_headlines():
-    pass
+    url = urlopen('http://www.michigandaily.com/section/opinion')
+    text = url.read()
+
+    soup = BeautifulSoup(text, "html.parser")
+
+    x = soup.find_all('div', class_="view view-most-read view-id-most_read view-display-id-panel_pane_1 view-dom-id-99658157999dd0ac5aa62c2b284dd266")
+    y = x[0].find_all("a")
+    titles = []
+    for x in y:
+        titles.append(x.text)
+    return titles
     #Your code here
 
 
@@ -56,7 +67,27 @@ def grab_headlines():
 ## requests.get(base_url, headers={'User-Agent': 'SI_CLASS'}) 
 
 def get_umsi_data():
-    pass
+    url = requests.get("https://www.si.umich.edu/directory?field_person_firstname_value=&field_person_lastname_value=&rid=All",  headers={'User-Agent': 'SI_CLASS'})
+    text = url.text
+    umsi_titles = {}
+    count = 0
+    for loop in range(13):
+        soup = BeautifulSoup(text, "html.parser")
+        x = soup.find_all("div", class_="ds-1col node node-person node-teaser view-mode-teaser clearfix")
+        for a in x:
+            y = a.find_all("div", class_="field field-name-title field-type-ds field-label-hidden") 
+            h2 = y[0].find_all("h2")
+            name = h2[0].text
+            z = a.find_all("div", class_="field field-name-field-person-titles field-type-text field-label-hidden")
+            div = z[0].find_all("div", class_="field-item even")
+            title = div[0].text 
+            umsi_titles[name]=title
+        count+=1
+        url = "https://www.si.umich.edu/directory?field_person_firstname_value=&field_person_lastname_value=&rid=All&page="
+        next_page = url + str(count)
+        req = requests.get(next_page,  headers={'User-Agent': 'SI_CLASS'})
+        text = req.text
+    return umsi_titles
     #Your code here
 
 ## PART 3 (b) Define a function called num_students.  
