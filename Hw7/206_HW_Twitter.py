@@ -72,7 +72,6 @@ try:
 	cache_file.close()
 	print('loading cache')
 except:
-	
 	cache_diction = {}
 	print('empty')
 
@@ -111,9 +110,25 @@ for x in range(3):
 
 
 
+# conn = sqlite3.connect("tweets.sqlite")
+# cur = conn.cursor()
 
+# cur.execute("DROP TABLE IF EXISTS Tweets")
+# cur.execute("CREATE TABLE Tweets (tweet_id TEXT, author TEXT, time_posted TIMESTAMP, tweet_text TEXT, retweets NUMBER)")
 
+# umsi_tweets = get__twitter_data()
 
+# for tw in umsi_tweets:
+# 	tup = tw["id"], tw["user"]["screen_name"], tw["created_at"], tw["text"], tw["retweet_count"]
+# 	cur.execute("INSERT INTO Tweets (tweet_id, author, time_poseted, tweet_text, retweets) VALUES (?, ?, ?, ?, ?) tup")
 
+# cur.execute("SELECT time_posted, tweet_text FROM Tweets")
+# all_res = cur.fetchall() # fetchone()
+# for t in all_res:
+# 	print(t[0] + " - " + t[1]+"\n")
+
+# cur.execture("SELECT author FROM Tweets WHERE retweets > 2")
+# more_than_2_rts = cur.fetchall()
+# print("more_than_2")
 
 
