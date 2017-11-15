@@ -152,41 +152,49 @@ conn.commit()
 
 # Make a query to select all of the records in the Users database. 
 # Save the list of tuples in a variable called users_info.
-
-users_info = cur.execute("SELECT * FROM Users")
+cur.execute("SELECT * FROM Users")
+users_info = cur.fetchall()
 
 
 # Make a query to select all of the user screen names from the database. 
 # Save a resulting list of strings (NOT tuples, the strings inside them!) 
 # in the variable screen_names. HINT: a list comprehension will make 
 # this easier to complete! 
-screen_names = cur.execute("SELECT screen_name FROM Users")
-
+cur.execute("SELECT screen_name FROM Users")
+fetch = cur.fetchall()
+screen_names = []
+for tup in fetch:
+	screen_names.append(tup[0])
 
 # Make a query to select all of the tweets (full rows of tweet information)
 # that have been retweeted more than 10 times. Save the result 
 # (a list of tuples, or an empty list) in a variable called retweets.
-retweets = cur.execute("SELECT * FROM Tweets WHERE retweets > 10")
-cur.fetchall()
+cur.execute("SELECT * FROM Tweets WHERE retweets > 10")
+retweets = cur.fetchall()
+
 
 # Make a query to select all the descriptions (descriptions only) of 
 # the users who have favorited more than 500 tweets. Access all those 
 # strings, and save them in a variable called favorites, 
 # which should ultimately be a list of strings.
-favorites = cur.execute("SELECT description FROM Users WHERE num_favs > 500")
-
+cur.execute("SELECT description FROM Users WHERE num_favs > 500")
+fetch1 = cur.fetchall()
+favorites = []
+for tup in fetch1:
+	favorites.append(tup[0])
 
 # Make a query using an INNER JOIN to get a list of tuples with 2 
 # elements in each tuple: the user screenname and the text of the 
 # tweet. Save the resulting list of tuples in a variable called joined_data2.
-joined_data = True
+cur.execute("SELECT text, screen_name FROM Tweets INNER JOIN Users ON Tweets.user_posted = Users.user_id")
+joined_data = cur.fetchall()
 
 # Make a query using an INNER JOIN to get a list of tuples with 2 
 # elements in each tuple: the user screenname and the text of the 
 # tweet in descending order based on retweets. Save the resulting 
 # list of tuples in a variable called joined_data2.
-
-joined_data2 = True
+cur.execute("SELECT screen_name, text From Tweets INNER JOIN Users on Tweets.user_posted = Users.user_id ORDER BY retweets DESC")
+joined_data2 = cur.fetchall()
 
 
 ### IMPORTANT: MAKE SURE TO CLOSE YOUR DATABASE CONNECTION AT THE END 
@@ -290,7 +298,8 @@ class Task3(unittest.TestCase):
 		self.assertEqual(type(favorites[0]),type(""),"Testing that at least one of the elements in the favorites list is a string, not a tuple or anything else")
 	def test_joined_result(self):
 		self.assertEqual(type(joined_data[0]),type(("hi","bye")),"Testing that an element in joined_result is a tuple")
-
+	def test_joined_result2(self):
+		self.assertEqual(type(joined_data2[0]),type(("hi","bye")),"Testing that an element in joined_result2 is a tuple")
 
 
 if __name__ == "__main__":
